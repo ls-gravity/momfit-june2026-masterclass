@@ -3,443 +3,540 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MomFit – June 2026 Masterclass Analytics</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>MomFit – June 2026 Masterclass · Full Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-/* ── TOKENS ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════ */
 :root {
-  --tiber:       #052F35;
-  --stone:       #025865;
-  --stone-mid:   #03687a;
-  --cornflower:  #C7B5F1;
-  --lime:        #ABF115;
-  --paper:       #F5F3EE;
-  --paper-dim:   #d4d0c8;
-  --muted:       rgba(245,243,238,0.45);
-  --border:      rgba(245,243,238,0.08);
-  --border-lit:  rgba(171,241,21,0.25);
-  --card:        rgba(2,88,101,0.22);
-  --card-hi:     rgba(2,88,101,0.38);
-  --negative:    #f2617a;
-  --positive:    #ABF115;
-  --neutral:     #C7B5F1;
+  --tiber:      #052F35;
+  --stone:      #025865;
+  --stone-mid:  #03687a;
+  --cornflower: #C7B5F1;
+  --lime:       #ABF115;
+  --paper:      #F5F3EE;
+  --paper-dim:  #c8c4bc;
+  --muted:      rgba(245,243,238,0.42);
+  --border:     rgba(245,243,238,0.08);
+  --card:       rgba(2,88,101,0.22);
+  --card-hi:    rgba(2,88,101,0.38);
+  --negative:   #f2617a;
+  --teal:       #4ac6d8;
 }
-
-/* ── RESET ─────────────────────────────────────────── */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 body {
   background: var(--tiber);
   color: var(--paper);
-  font-family: 'Geist', 'Calibri', system-ui, sans-serif;
+  font-family: 'Geist','Calibri',system-ui,sans-serif;
   font-size: 14px;
   line-height: 1.55;
   min-height: 100vh;
   overflow-x: hidden;
 }
-
-/* ── AMBIENT TEXTURE ───────────────────────────────── */
 body::before {
-  content:'';
-  position:fixed;inset:0;
+  content:''; position:fixed; inset:0;
   background:
     radial-gradient(ellipse 70% 50% at 85% 10%, rgba(171,241,21,0.04) 0%, transparent 70%),
     radial-gradient(ellipse 50% 60% at 10% 90%, rgba(199,181,241,0.05) 0%, transparent 70%);
-  pointer-events:none;z-index:0;
+  pointer-events:none; z-index:0;
 }
 
-/* ── LAYOUT ────────────────────────────────────────── */
-.wrap {
+/* ═══════════════════════════════════════════════
+   SHELL
+═══════════════════════════════════════════════ */
+.shell {
   max-width: 1360px;
   margin: 0 auto;
-  padding: 36px 28px 64px;
-  position: relative; z-index: 1;
+  padding: 32px 28px 0;
+  position: relative; z-index:1;
 }
 
-/* ── TOP BAR ───────────────────────────────────────── */
-.topbar {
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+.site-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   flex-wrap: wrap;
   animation: fadeIn .5s ease both;
 }
-.topbar-left { display: flex; flex-direction: column; gap: 6px; }
-.topbar-eyebrow {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--lime);
-  font-weight: 600;
-  font-family: 'Geist','Calibri',sans-serif;
+.hdr-left { display:flex; flex-direction:column; gap:5px; }
+.hdr-eyebrow {
+  font-size:10px; letter-spacing:3.5px; text-transform:uppercase;
+  color: var(--lime); font-weight:600;
 }
-.topbar-title {
-  font-family: 'Bricolage Grotesque','Calibri',sans-serif;
-  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
-  font-weight: 800;
-  line-height: 1.05;
-  color: var(--paper);
-  letter-spacing: -0.02em;
+.hdr-title {
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size: clamp(1.5rem,3.5vw,2.6rem);
+  font-weight:800; line-height:1.05; letter-spacing:-0.025em;
 }
-.topbar-title a {
-  color: inherit; text-decoration: none;
-  border-bottom: 2px solid rgba(171,241,21,0.4);
+.hdr-title a {
+  color:inherit; text-decoration:none;
+  border-bottom:2px solid rgba(171,241,21,0.35);
   transition: border-color .2s;
 }
-.topbar-title a:hover { border-color: var(--lime); }
-.topbar-sub {
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 2px;
-}
-.topbar-badges {
-  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
-}
+.hdr-title a:hover { border-color:var(--lime); }
+.hdr-sub { font-size:13px; color:var(--muted); }
+.hdr-badges { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 .badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 10px; font-weight: 600; letter-spacing: .8px;
-  text-transform: uppercase;
-  padding: 5px 12px; border-radius: 4px;
-  font-family: 'Geist','Calibri',sans-serif;
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:600; letter-spacing:.8px; text-transform:uppercase;
+  padding:5px 12px; border-radius:4px;
 }
-.badge-lime   { background: rgba(171,241,21,.1);  color: var(--lime);       border: 1px solid rgba(171,241,21,.25); }
-.badge-purple { background: rgba(199,181,241,.1); color: var(--cornflower); border: 1px solid rgba(199,181,241,.25);}
-.badge-muted  { background: rgba(245,243,238,.06);color: var(--muted);      border: 1px solid var(--border); }
+.badge-lime   { background:rgba(171,241,21,.1);  color:var(--lime);       border:1px solid rgba(171,241,21,.25); }
+.badge-purple { background:rgba(199,181,241,.1); color:var(--cornflower); border:1px solid rgba(199,181,241,.25); }
+.badge-muted  { background:rgba(245,243,238,.06);color:var(--muted);      border:1px solid var(--border); }
 
-/* ── SECTION LABELS ────────────────────────────────── */
-.section-row {
-  display: flex; align-items: center; gap: 10px;
-  margin: 0 0 14px;
+/* ═══════════════════════════════════════════════
+   TAB NAV — sticky
+═══════════════════════════════════════════════ */
+.tab-rail-outer {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(180deg, #052F35 70%, rgba(5,47,53,0) 100%);
+  padding-bottom: 0;
+  margin: 0 -28px;
+  padding: 0 28px;
 }
-.section-label {
-  font-size: 9px;
-  letter-spacing: 3.5px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
+.tab-rail {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  padding-top: 12px;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 12px;
   font-family: 'Geist','Calibri',sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color .2s, border-color .2s;
   white-space: nowrap;
 }
-.section-rule {
-  flex: 1; height: 1px;
-  background: var(--border);
+.tab-btn:hover { color: var(--paper-dim); }
+.tab-btn.active {
+  color: var(--paper);
+  border-bottom-color: var(--lime);
 }
-.mb-section { margin-bottom: 28px; }
+.tab-btn .tab-icon { font-size:14px; }
+.tab-btn .tab-count {
+  font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  padding:2px 7px; border-radius:10px;
+  background: rgba(171,241,21,0.1); color:var(--lime);
+  border:1px solid rgba(171,241,21,0.2);
+}
+.tab-btn:not(.active) .tab-count {
+  background:rgba(245,243,238,0.05); color:var(--muted);
+  border-color:var(--border);
+}
 
-/* ── GRID HELPERS ──────────────────────────────────── */
-.g5 { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:12px; }
-.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px; }
-.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
-.g2 { display:grid; grid-template-columns:1fr 1fr;       gap:12px; margin-bottom:12px; }
-.g-7-5 { display:grid; grid-template-columns:7fr 5fr;   gap:12px; margin-bottom:12px; }
-.g-5-7 { display:grid; grid-template-columns:5fr 7fr;   gap:12px; margin-bottom:12px; }
-.span2 { grid-column: span 2; }
+/* ═══════════════════════════════════════════════
+   TAB PANELS
+═══════════════════════════════════════════════ */
+.tab-panel {
+  display: none;
+  padding: 32px 0 72px;
+  animation: fadeIn .35s ease both;
+}
+.tab-panel.active { display: block; }
 
-/* ── CARD BASE ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   SHARED LAYOUT
+═══════════════════════════════════════════════ */
+.sec-row { display:flex; align-items:center; gap:10px; margin:0 0 14px; }
+.sec-label {
+  font-size:9px; letter-spacing:3.5px; text-transform:uppercase;
+  color:var(--muted); font-weight:600; white-space:nowrap;
+}
+.sec-rule { flex:1; height:1px; background:var(--border); }
+.mb { margin-bottom:28px; }
+
+.g5  { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:12px; }
+.g4  { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:12px; }
+.g3  { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
+.g2  { display:grid; grid-template-columns:1fr 1fr;       gap:12px; margin-bottom:12px; }
+.g-7-5 { display:grid; grid-template-columns:7fr 5fr;    gap:12px; margin-bottom:12px; }
+.g-5-7 { display:grid; grid-template-columns:5fr 7fr;    gap:12px; margin-bottom:12px; }
+.g-2-1 { display:grid; grid-template-columns:2fr 1fr;    gap:14px; margin-bottom:14px; }
+
+/* ═══════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════ */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px 22px;
-  position: relative; overflow: hidden;
-  transition: background .2s, border-color .2s, transform .15s;
+  border-radius:10px;
+  padding:20px 22px;
+  position:relative; overflow:hidden;
+  transition:background .2s, border-color .2s, transform .15s;
 }
 .card:hover {
   background: var(--card-hi);
   border-color: rgba(245,243,238,0.14);
   transform: translateY(-1px);
 }
-.card-accent-top::after {
-  content:'';
-  position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg, transparent 0%, var(--lime) 50%, transparent 100%);
-  opacity: .5;
+.card-title {
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size:15px; font-weight:700; letter-spacing:-0.01em; margin-bottom:3px;
 }
+.card-desc { font-size:11px; color:var(--muted); margin-bottom:16px; }
+
+/* accent top lines */
+.al-lime::after,
+.card-accent-top::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent); opacity:.55;
+}
+.al-purple::after,
 .card-accent-purple::after {
-  background: linear-gradient(90deg, transparent, var(--cornflower), transparent);
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--cornflower),transparent); opacity:.55;
+}
+.al-teal::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,#4ac6d8,transparent); opacity:.55;
 }
 
-/* ── KPI METRIC ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   KPI
+═══════════════════════════════════════════════ */
 .kpi-label {
-  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); font-weight: 500; margin-bottom: 8px;
-  font-family: 'Geist','Calibri',sans-serif;
+  font-size:10px; letter-spacing:2px; text-transform:uppercase;
+  color:var(--muted); font-weight:500; margin-bottom:8px;
 }
 .kpi-value {
-  font-family: 'Bricolage Grotesque','Calibri Bold',sans-serif;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 800; line-height: 1; letter-spacing: -0.02em;
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size:clamp(1.8rem,3vw,2.5rem);
+  font-weight:800; line-height:1; letter-spacing:-0.02em;
 }
-.kpi-sub {
-  font-size: 11px; color: var(--muted); margin-top: 6px;
-}
+.kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; }
 .kpi-delta {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 11px; font-weight: 600; margin-top: 8px;
-  padding: 2px 8px; border-radius: 3px;
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:11px; font-weight:600; margin-top:8px;
+  padding:2px 8px; border-radius:3px;
 }
-.delta-up   { background: rgba(171,241,21,.1);  color: var(--lime); }
-.delta-down { background: rgba(242,97,122,.1);  color: var(--negative); }
-.delta-neut { background: rgba(199,181,241,.1); color: var(--cornflower); }
+.delta-up   { background:rgba(171,241,21,.1);  color:var(--lime); }
+.delta-down { background:rgba(242,97,122,.1);  color:var(--negative); }
+.delta-neut { background:rgba(199,181,241,.1); color:var(--cornflower); }
 
-/* Color helpers */
-.c-lime      { color: var(--lime); }
-.c-purple    { color: var(--cornflower); }
-.c-paper     { color: var(--paper); }
-.c-muted     { color: var(--muted); }
-.c-neg       { color: var(--negative); }
-.c-stone     { color: #4ac6d8; }
-
-/* ── CARD TITLE ────────────────────────────────────── */
-.card-title {
-  font-family: 'Bricolage Grotesque','Calibri Bold',sans-serif;
-  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
-  margin-bottom: 3px;
-}
-.card-desc { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
-
-/* ── PROGRESS BAR ──────────────────────────────────── */
-.pbar-wrap { margin-bottom: 14px; }
-.pbar-header {
-  display: flex; justify-content: space-between;
-  margin-bottom: 5px;
-}
-.pbar-label { font-size: 12px; color: var(--paper-dim); }
-.pbar-vals  { font-size: 12px; font-weight: 600; }
-.pbar-track {
-  height: 5px; background: rgba(245,243,238,0.07);
-  border-radius: 3px; overflow: hidden;
-}
-.pbar-fill {
-  height: 100%; border-radius: 3px;
-  transition: width 1.4s cubic-bezier(.16,1,.3,1);
-  width: 0%;
+.hero-num {
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size:clamp(3rem,6vw,5rem);
+  font-weight:800; line-height:1; letter-spacing:-0.04em;
 }
 
-/* ── NEW vs RETURNING ROW ──────────────────────────── */
+/* ═══════════════════════════════════════════════
+   COLORS
+═══════════════════════════════════════════════ */
+.c-lime   { color:var(--lime); }
+.c-purple { color:var(--cornflower); }
+.c-teal   { color:#4ac6d8; }
+.c-paper  { color:var(--paper); }
+.c-muted  { color:var(--muted); }
+.c-neg    { color:var(--negative); }
+.c-stone  { color:#4ac6d8; }
+
+/* ═══════════════════════════════════════════════
+   PROGRESS / BARS
+═══════════════════════════════════════════════ */
+.pbar-wrap { margin-bottom:14px; }
+.pbar-header { display:flex; justify-content:space-between; margin-bottom:5px; }
+.pbar-label { font-size:12px; color:var(--paper-dim); }
+.pbar-vals  { font-size:12px; font-weight:600; }
+.pbar-track { height:5px; background:rgba(245,243,238,0.07); border-radius:3px; overflow:hidden; }
+.pbar-fill  { height:100%; border-radius:3px; transition:width 1.4s cubic-bezier(.16,1,.3,1); width:0%; }
+
 .nv-bar-outer {
-  height: 10px; border-radius: 5px;
-  background: rgba(199,181,241,0.15);
-  overflow: hidden; margin: 10px 0;
-  position: relative;
+  height:10px; border-radius:5px;
+  background:rgba(199,181,241,0.15);
+  overflow:hidden; margin:10px 0;
 }
 .nv-bar-fill {
-  height: 100%; border-radius: 5px;
-  background: linear-gradient(90deg, var(--lime), #ceff5f);
-  transition: width 1.4s cubic-bezier(.16,1,.3,1);
-  width: 0%;
+  height:100%; border-radius:5px;
+  background:linear-gradient(90deg,var(--lime),#ceff5f);
+  transition:width 1.4s cubic-bezier(.16,1,.3,1); width:0%;
 }
-.nv-labels {
-  display: flex; justify-content: space-between;
-  font-size: 11px;
-}
+.nv-labels { display:flex; justify-content:space-between; font-size:11px; }
 
-/* ── SOURCE PILLS ──────────────────────────────────── */
-.source-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 4px; }
+/* ═══════════════════════════════════════════════
+   SOURCE PILLS
+═══════════════════════════════════════════════ */
+.source-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:4px; }
 .source-pill {
-  background: rgba(245,243,238,.04);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px 12px;
-  text-align: center;
+  background:rgba(245,243,238,.04);
+  border:1px solid var(--border);
+  border-radius:8px; padding:14px 12px; text-align:center;
 }
 .sp-val {
-  font-family: 'Bricolage Grotesque','Calibri Bold',sans-serif;
-  font-size: 1.55rem; font-weight: 800; line-height: 1;
-  margin-bottom: 3px;
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size:1.55rem; font-weight:800; line-height:1; margin-bottom:3px;
 }
-.sp-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
-.sp-sub   { font-size: 10px; margin-top: 5px; }
-.sp-new   { font-size: 10px; margin-top: 3px; font-weight: 600; }
+.sp-label { font-size:9px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); }
+.sp-sub   { font-size:10px; margin-top:5px; }
+.sp-new   { font-size:10px; margin-top:3px; font-weight:600; }
 
-/* ── DIVIDER ───────────────────────────────────────── */
-.divider {
-  height: 1px; background: var(--border);
-  margin: 16px 0;
-}
-
-/* ── COMPARISON TABLE ──────────────────────────────── */
-.cmp-table { width: 100%; border-collapse: collapse; }
+/* ═══════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════ */
+.cmp-table { width:100%; border-collapse:collapse; }
 .cmp-table th {
-  font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--muted); font-weight: 600; padding: 0 0 10px;
-  text-align: left; border-bottom: 1px solid var(--border);
-  font-family: 'Geist','Calibri',sans-serif;
+  font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--muted); font-weight:600; padding:0 0 10px;
+  text-align:left; border-bottom:1px solid var(--border);
 }
-.cmp-table th:not(:first-child) { text-align: right; }
+.cmp-table th:not(:first-child) { text-align:right; }
 .cmp-table td {
-  padding: 10px 0 8px;
-  border-bottom: 1px solid rgba(245,243,238,0.05);
-  font-size: 13px;
-  vertical-align: middle;
+  padding:10px 0 8px;
+  border-bottom:1px solid rgba(245,243,238,0.05);
+  font-size:13px; vertical-align:middle;
 }
-.cmp-table td:not(:first-child) { text-align: right; }
-.cmp-table tr:last-child td { border-bottom: none; }
-.cmp-table .row-metric { color: var(--muted); font-size: 11px; }
-.cmp-table .col-march  { color: var(--paper-dim); }
-.cmp-table .col-june   { color: var(--paper); font-weight: 600; }
-.cmp-table .col-delta  { }
+.cmp-table td:not(:first-child) { text-align:right; }
+.cmp-table tr:last-child td { border-bottom:none; }
+.row-metric { color:var(--muted); font-size:11px; }
+.col-march  { color:var(--paper-dim); }
+.col-june   { color:var(--paper); font-weight:600; }
 
-/* ── CALLS BREAKDOWN ───────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   STAT ROW
+═══════════════════════════════════════════════ */
 .calls-stat {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 14px;
-  border-radius: 7px;
-  background: rgba(245,243,238,.03);
-  border: 1px solid var(--border);
-  margin-bottom: 8px;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:11px 14px; border-radius:7px;
+  background:rgba(245,243,238,.03);
+  border:1px solid var(--border);
+  margin-bottom:8px;
 }
-.calls-stat-label { font-size: 12px; color: var(--paper-dim); }
-.calls-stat-val   { font-size: 15px; font-weight: 700; }
+.calls-stat-label { font-size:12px; color:var(--paper-dim); }
+.calls-stat-val   { font-size:15px; font-weight:700; }
 
-/* ── BIG NUMBER HERO ───────────────────────────────── */
-.hero-num {
-  font-family: 'Bricolage Grotesque','Calibri Bold',sans-serif;
-  font-size: clamp(3rem, 6vw, 5rem);
-  font-weight: 800; line-height: 1;
-  letter-spacing: -0.04em;
+/* ═══════════════════════════════════════════════
+   INSIGHTS
+═══════════════════════════════════════════════ */
+.insight, .ins-lime, .ins-purple, .ins-teal, .ins-warn {
+  border-radius:0 8px 8px 0;
+  padding:11px 14px;
+  font-size:12px; color:var(--paper-dim);
+  line-height:1.65; border-left:3px solid;
+}
+.insight,
+.ins-lime   { background:rgba(171,241,21,.05);  border-color:var(--lime);       }
+.ins-purple,
+.insight-purple { background:rgba(199,181,241,.05); border-color:var(--cornflower); }
+.ins-teal   { background:rgba(74,198,216,.05);  border-color:#4ac6d8;           }
+.ins-warn,
+.insight-warn { background:rgba(242,97,122,.06);  border-color:var(--negative);   }
+.insight strong, .ins-lime strong  { color:var(--lime);       font-weight:700; }
+.ins-purple strong, .insight-purple strong { color:var(--cornflower); font-weight:700; }
+.ins-teal strong                   { color:#4ac6d8;           font-weight:700; }
+.ins-warn strong, .insight-warn strong   { color:var(--negative);   font-weight:700; }
+
+/* ═══════════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════════ */
+.divider { height:1px; background:var(--border); margin:16px 0; }
+
+/* ═══════════════════════════════════════════════
+   HEAT
+═══════════════════════════════════════════════ */
+.heat-grid {
+  display:grid; grid-template-columns:repeat(24,1fr);
+  gap:3px; margin:12px 0 6px;
+}
+.heat-cell {
+  aspect-ratio:1; border-radius:3px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:8px; font-weight:600; color:rgba(0,0,0,0.6);
+  transition:transform .15s; cursor:default;
+}
+.heat-cell:hover { transform:scale(1.15); z-index:2; }
+.heat-hour-labels { display:grid; grid-template-columns:repeat(24,1fr); gap:3px; }
+.heat-hour-labels span { text-align:center; font-size:8px; color:var(--muted); overflow:hidden; }
+
+/* ═══════════════════════════════════════════════
+   PEAK LIST
+═══════════════════════════════════════════════ */
+.peak-list { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+.peak-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:9px 13px;
+  background:rgba(245,243,238,.03); border:1px solid var(--border); border-radius:7px;
+}
+.peak-item:hover { border-color:rgba(245,243,238,.12); }
+.pi-time  { font-size:12px; font-weight:600; font-family:'Bricolage Grotesque','Calibri Bold',sans-serif; }
+.pi-count { font-size:12px; font-weight:700; }
+.pi-bar   { flex:1; height:4px; background:rgba(245,243,238,.07); border-radius:2px; margin:0 12px; overflow:hidden; }
+.pi-fill  { height:100%; border-radius:2px; transition:width 1.2s cubic-bezier(.16,1,.3,1); width:0%; }
+
+/* ═══════════════════════════════════════════════
+   TIME BADGES & PLAYBOOKS
+═══════════════════════════════════════════════ */
+.time-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:700;
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  padding:6px 14px; border-radius:6px; margin:4px 4px 0 0;
+}
+.tb-lime   { background:rgba(171,241,21,.12); color:var(--lime);       border:1px solid rgba(171,241,21,.25); }
+.tb-purple { background:rgba(199,181,241,.12);color:var(--cornflower); border:1px solid rgba(199,181,241,.25);}
+.tb-teal   { background:rgba(74,198,216,.12); color:#4ac6d8;           border:1px solid rgba(74,198,216,.25);}
+.avoid-tag {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:10px; font-weight:600; letter-spacing:.5px;
+  padding:3px 10px; border-radius:4px;
+  background:rgba(242,97,122,.08); color:var(--negative);
+  border:1px solid rgba(242,97,122,.2);
+}
+.rec-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:10px; padding:22px; position:relative; overflow:hidden;
+}
+.rec-channel { font-size:9px; letter-spacing:3px; text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+.rec-title {
+  font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;
+  font-size:17px; font-weight:800; letter-spacing:-0.01em; margin-bottom:10px;
+}
+.rec-block { margin-bottom:12px; }
+.rec-block-label { font-size:10px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); font-weight:600; margin-bottom:6px; }
+.rec-times { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+.rec-note  { font-size:11px; color:var(--muted); line-height:1.6; }
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.site-footer {
+  text-align:center; padding:24px 28px 40px;
+  border-top:1px solid var(--border);
+  font-size:11px; color:var(--muted);
+  position:relative; z-index:1;
+  max-width:1360px; margin:0 auto;
 }
 
-/* ── INSIGHT BOX ───────────────────────────────────── */
-.insight {
-  background: rgba(171,241,21,0.06);
-  border: 1px solid rgba(171,241,21,0.2);
-  border-left: 3px solid var(--lime);
-  border-radius: 0 8px 8px 0;
-  padding: 12px 16px;
-  font-size: 12px;
-  color: var(--paper-dim);
-  margin-top: 14px;
-  line-height: 1.6;
-}
-.insight strong { color: var(--lime); font-weight: 600; }
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes fadeIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.anim  { animation:fadeIn .5s ease both; }
+.d1{animation-delay:.04s}.d2{animation-delay:.08s}.d3{animation-delay:.12s}
+.d4{animation-delay:.16s}.d5{animation-delay:.20s}.d6{animation-delay:.24s}
 
-.insight-purple {
-  background: rgba(199,181,241,0.06);
-  border-color: rgba(199,181,241,0.2);
-  border-left-color: var(--cornflower);
-}
-.insight-purple strong { color: var(--cornflower); }
-
-.insight-warn {
-  background: rgba(242,97,122,0.06);
-  border-color: rgba(242,97,122,0.2);
-  border-left-color: var(--negative);
-}
-.insight-warn strong { color: var(--negative); }
-
-/* ── CHART WRAPPER ─────────────────────────────────── */
-.ch-wrap { position: relative; }
-
-/* ── FOOTER ────────────────────────────────────────── */
-.footer {
-  text-align: center;
-  margin-top: 48px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--muted);
-}
-
-/* ── ANIMATIONS ────────────────────────────────────── */
-@keyframes fadeIn  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-.anim { animation: fadeIn .5s ease both; }
-.anim-d1 { animation-delay:.05s; }
-.anim-d2 { animation-delay:.1s; }
-.anim-d3 { animation-delay:.15s; }
-.anim-d4 { animation-delay:.2s; }
-.anim-d5 { animation-delay:.25s; }
-.anim-d6 { animation-delay:.30s; }
-
-/* ── RESPONSIVE ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
 @media(max-width:1080px){
   .g5{grid-template-columns:repeat(3,1fr);}
   .g4{grid-template-columns:repeat(2,1fr);}
 }
-@media(max-width:760px){
-  .g5,.g3{grid-template-columns:repeat(2,1fr);}
+@media(max-width:780px){
+  .g5{grid-template-columns:repeat(2,1fr);}
+  .g3,.g-2-1{grid-template-columns:1fr;}
   .g2,.g-7-5,.g-5-7{grid-template-columns:1fr;}
   .source-grid{grid-template-columns:1fr 1fr;}
-  .wrap{padding:24px 16px 48px;}
+  .shell{padding:24px 16px 0;}
+  .tab-rail-outer{margin:0 -16px;padding:0 16px;}
 }
-@media(max-width:440px){
-  .g5,.g4{grid-template-columns:1fr 1fr;}
-  .source-grid{grid-template-columns:1fr;}
+@media(max-width:480px){
+  .g4,.g5{grid-template-columns:1fr 1fr;}
+  .tab-btn{padding:10px 12px 12px;font-size:11px;}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<!-- ═══════════════════════════════════════════════════
-     TOP BAR
-═══════════════════════════════════════════════════ -->
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="topbar-eyebrow">MomFit · Operations Center</div>
-    <h1 class="topbar-title">
-      <a href="https://airtable.com/appxyLfZMaFsoznCc/tblCkjeBSlp4HMEew/viwtbjlWWUDk1H12o?blocks=hide" target="_blank" rel="noopener">
-        June 2026 Masterclass Analytics
-      </a>
-    </h1>
-    <div class="topbar-sub">Event date: June 28, 2026 · "The Truth About Why You're Not Losing Weight as a Busy Mom"</div>
+<!-- ═══════════════════════════════════
+     SHELL WRAPPER (header + tabs)
+═══════════════════════════════════ -->
+<div class="shell">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="hdr-left">
+      <div class="hdr-eyebrow">MomFit · Operations Center · June 2026</div>
+      <h1 class="hdr-title">
+        <a href="https://airtable.com/appxyLfZMaFsoznCc/tblCkjeBSlp4HMEew/viwtbjlWWUDk1H12o?blocks=hide"
+           target="_blank" rel="noopener">
+          June 2026 Masterclass — Full Report
+        </a>
+      </h1>
+      <div class="hdr-sub">"The Truth About Why You're Not Losing Weight as a Busy Mom" · June 28 2026 · CSV analyzed</div>
+    </div>
+    <div class="hdr-badges">
+      <div class="badge badge-lime">550 Registrants</div>
+      <div class="badge badge-purple">Booking Phase · No Cash Yet</div>
+      <div class="badge badge-muted">Built by Gravity</div>
+    </div>
   </div>
-  <div class="topbar-badges">
-    <div class="badge badge-lime">550 Registrants</div>
-    <div class="badge badge-purple">No Cash Yet — Booking Phase</div>
-    <div class="badge badge-muted">CSV Analyzed · June 28 2026</div>
+
+  <!-- TAB NAV -->
+  <div class="tab-rail-outer">
+    <div class="tab-rail">
+      <button class="tab-btn active" data-tab="overview">
+        <span class="tab-icon">📊</span>
+        Event Overview
+        <span class="tab-count">5 sections</span>
+      </button>
+      <button class="tab-btn" data-tab="timing">
+        <span class="tab-icon">🕐</span>
+        Timing Intelligence
+        <span class="tab-count">5 sections</span>
+      </button>
+    </div>
   </div>
-</div>
+
+</div><!-- /shell -->
 
 
-<!-- ═══════════════════════════════════════════════════
-     SECTION 1 · CORE EVENT KPIs
-═══════════════════════════════════════════════════ -->
-<div class="section-row mb-section">
-  <div class="section-label">Core Event KPIs</div>
-  <div class="section-rule"></div>
-</div>
+<!-- ═══════════════════════════════════
+     TAB 1 — EVENT OVERVIEW
+═══════════════════════════════════ -->
+<div class="tab-panel active" id="tab-overview">
+<div class="shell">
 
-<div class="g5 anim anim-d1">
-  <!-- Registrants -->
+<!-- § Core KPIs -->
+<div class="sec-row mb"><div class="sec-label">Core Event KPIs</div><div class="sec-rule"></div></div>
+<div class="g5 anim d1">
   <div class="card card-accent-top">
     <div class="kpi-label">Registrants</div>
     <div class="kpi-value c-lime" data-count="550">0</div>
     <div class="kpi-sub">Total unique signups</div>
     <div class="kpi-delta delta-up">↑ 43.2% vs March</div>
   </div>
-
-  <!-- Attendees -->
   <div class="card">
     <div class="kpi-label">Live Attendees</div>
     <div class="kpi-value c-purple" data-count="117">0</div>
     <div class="kpi-sub">Confirmed in event</div>
     <div class="kpi-delta delta-down">↓ 10.7% vs March</div>
   </div>
-
-  <!-- Show Rate -->
   <div class="card">
     <div class="kpi-label">Show Rate</div>
     <div class="kpi-value c-paper" id="showRate">0%</div>
     <div class="kpi-sub">117 of 550 attended</div>
     <div class="kpi-delta delta-down">↓ 12.84pp vs March</div>
   </div>
-
-  <!-- Calls Booked -->
   <div class="card card-accent-top">
     <div class="kpi-label">Calls Booked</div>
     <div class="kpi-value c-lime" data-count="31">0</div>
     <div class="kpi-sub">From all sources</div>
     <div class="kpi-delta delta-down">↓ 55.1% vs March</div>
   </div>
-
-  <!-- Calls / Attendee -->
   <div class="card">
     <div class="kpi-label">Call Conversion</div>
     <div class="kpi-value c-purple" id="convRate">0%</div>
@@ -448,23 +545,12 @@ body::before {
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION 2 · AUDIENCE COMPOSITION
-═══════════════════════════════════════════════════ -->
-<div class="section-row mb-section" style="margin-top:24px">
-  <div class="section-label">Audience Composition</div>
-  <div class="section-rule"></div>
-</div>
-
-<div class="g-7-5 anim anim-d2">
-
-  <!-- LEFT: Source breakdown -->
+<!-- § Audience Composition -->
+<div class="sec-row mb" style="margin-top:24px"><div class="sec-label">Audience Composition</div><div class="sec-rule"></div></div>
+<div class="g-7-5 anim d2">
   <div class="card card-accent-top">
     <div class="card-title">Registrant Sources</div>
     <div class="card-desc">Where the 550 signups came from · % of total</div>
-
-    <!-- Email -->
     <div class="pbar-wrap">
       <div class="pbar-header">
         <span class="pbar-label">📧 Email / SMS</span>
@@ -472,8 +558,6 @@ body::before {
       </div>
       <div class="pbar-track"><div class="pbar-fill" data-w="57.6" style="background:var(--cornflower)"></div></div>
     </div>
-
-    <!-- Ads -->
     <div class="pbar-wrap">
       <div class="pbar-header">
         <span class="pbar-label">📣 Paid Ads</span>
@@ -481,21 +565,15 @@ body::before {
       </div>
       <div class="pbar-track"><div class="pbar-fill" data-w="33.8" style="background:var(--lime)"></div></div>
     </div>
-
-    <!-- Organic -->
     <div class="pbar-wrap">
       <div class="pbar-header">
         <span class="pbar-label">🌿 Organic</span>
-        <span class="pbar-vals c-stone">51 <span class="c-muted" style="font-weight:400">· 9.3%</span></span>
+        <span class="pbar-vals c-teal">51 <span class="c-muted" style="font-weight:400">· 9.3%</span></span>
       </div>
       <div class="pbar-track"><div class="pbar-fill" data-w="9.3" style="background:#4ac6d8"></div></div>
     </div>
-
     <div class="divider"></div>
-
-    <!-- Source breakdown pills -->
     <div class="source-grid">
-      <!-- Ads -->
       <div class="source-pill">
         <div class="sp-val c-lime">186</div>
         <div class="sp-label">Paid Ads</div>
@@ -503,7 +581,6 @@ body::before {
         <div class="sp-new c-lime">152 brand new</div>
         <div class="sp-sub" style="font-size:9px;color:var(--muted)">81.7% of ad reg.</div>
       </div>
-      <!-- Email -->
       <div class="source-pill">
         <div class="sp-val c-purple">317</div>
         <div class="sp-label">Email / SMS</div>
@@ -511,25 +588,20 @@ body::before {
         <div class="sp-new c-purple">17 brand new</div>
         <div class="sp-sub" style="font-size:9px;color:var(--muted)">5.4% of email reg.</div>
       </div>
-      <!-- Organic -->
       <div class="source-pill">
-        <div class="sp-val c-stone">51</div>
+        <div class="sp-val c-teal">51</div>
         <div class="sp-label">Organic</div>
         <div class="sp-sub c-muted">9.3% of all reg.</div>
-        <div class="sp-new" style="color:#4ac6d8">16 brand new</div>
+        <div class="sp-new c-teal">16 brand new</div>
         <div class="sp-sub" style="font-size:9px;color:var(--muted)">31.4% of org. reg.</div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT: New vs Returning -->
   <div style="display:flex;flex-direction:column;gap:12px;">
-
-    <!-- New vs Returning hero -->
     <div class="card card-accent-top" style="flex:1">
       <div class="card-title">New vs. Returning</div>
       <div class="card-desc">Audience freshness signal</div>
-
       <div style="display:flex;gap:20px;margin-bottom:12px;align-items:flex-end;">
         <div>
           <div class="kpi-label" style="margin-bottom:4px">Brand New</div>
@@ -539,25 +611,19 @@ body::before {
         <div style="opacity:.3;font-size:2rem;padding-bottom:8px;">/</div>
         <div>
           <div class="kpi-label" style="margin-bottom:4px">Returning</div>
-          <div class="hero-num" style="color:var(--cornflower)">365</div>
+          <div class="hero-num c-purple">365</div>
           <div class="kpi-sub">66.4% of registrants</div>
         </div>
       </div>
-
-      <div class="nv-bar-outer">
-        <div class="nv-bar-fill" data-w="33.6"></div>
-      </div>
+      <div class="nv-bar-outer"><div class="nv-bar-fill" data-w="33.6"></div></div>
       <div class="nv-labels">
         <span class="c-lime" style="font-size:10px;font-weight:600">NEW 33.6%</span>
         <span class="c-purple" style="font-size:10px;font-weight:600">RETURNING 66.4%</span>
       </div>
-
       <div class="insight" style="margin-top:12px">
         <strong>Ads drive new blood.</strong> 81.7% of ad registrants are first-time contacts. Email and organic pull from your existing audience.
       </div>
     </div>
-
-    <!-- New leads by source mini card -->
     <div class="card">
       <div class="card-title" style="font-size:13px">New Lead Source Breakdown</div>
       <div class="card-desc" style="margin-bottom:10px">Of the 185 brand-new contacts</div>
@@ -568,7 +634,7 @@ body::before {
         </div>
         <div class="calls-stat">
           <span class="calls-stat-label">🌿 From Organic</span>
-          <span class="calls-stat-val" style="color:#4ac6d8">16 <span class="c-muted" style="font-size:11px;font-weight:400">8.6%</span></span>
+          <span class="calls-stat-val c-teal">16 <span class="c-muted" style="font-size:11px;font-weight:400">8.6%</span></span>
         </div>
         <div class="calls-stat">
           <span class="calls-stat-label">📧 From Email / SMS</span>
@@ -579,42 +645,32 @@ body::before {
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION 3 · CHARTS ROW
-═══════════════════════════════════════════════════ -->
-<div class="section-row mb-section" style="margin-top:24px">
-  <div class="section-label">Visual Breakdown</div>
-  <div class="section-rule"></div>
-</div>
-
-<div class="g3 anim anim-d3">
-  <!-- Registrant source donut -->
-  <div class="card chart-card">
+<!-- § Visual Breakdown -->
+<div class="sec-row mb" style="margin-top:24px"><div class="sec-label">Visual Breakdown</div><div class="sec-rule"></div></div>
+<div class="g3 anim d3">
+  <div class="card">
     <div class="card-title">Source Mix</div>
     <div class="card-desc">Share of 550 registrants by channel</div>
-    <div class="ch-wrap" style="height:190px;position:relative;">
-      <canvas id="srcChart"></canvas>
+    <div style="height:190px;position:relative;">
+      <canvas id="o_srcChart"></canvas>
       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
-        <div style="font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;font-size:1.6rem;font-weight:800;color:var(--lime);">550</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;color:var(--lime)">550</div>
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)">Total</div>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:5px;margin-top:12px;">
       <div style="display:flex;justify-content:space-between;font-size:11px;"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cornflower);margin-right:6px;"></span>Email/SMS</span><span class="c-purple" style="font-weight:600">317 · 57.6%</span></div>
       <div style="display:flex;justify-content:space-between;font-size:11px;"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--lime);margin-right:6px;"></span>Paid Ads</span><span class="c-lime" style="font-weight:600">186 · 33.8%</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ac6d8;margin-right:6px;"></span>Organic</span><span class="c-stone" style="font-weight:600">51 · 9.3%</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ac6d8;margin-right:6px;"></span>Organic</span><span class="c-teal" style="font-weight:600">51 · 9.3%</span></div>
     </div>
   </div>
-
-  <!-- New vs Returning donut -->
   <div class="card">
     <div class="card-title">Audience Type</div>
     <div class="card-desc">New contacts vs. warm audience</div>
-    <div class="ch-wrap" style="height:190px;position:relative;">
-      <canvas id="newChart"></canvas>
+    <div style="height:190px;position:relative;">
+      <canvas id="o_newChart"></canvas>
       <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
-        <div style="font-family:'Bricolage Grotesque','Calibri Bold',sans-serif;font-size:1.6rem;font-weight:800;color:var(--lime);">33.6%</div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:800;color:var(--lime)">33.6%</div>
         <div style="font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)">New</div>
       </div>
     </div>
@@ -623,117 +679,48 @@ body::before {
       <div style="display:flex;justify-content:space-between;font-size:11px;"><span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cornflower);margin-right:6px;"></span>Returning</span><span class="c-purple" style="font-weight:600">365 · 66.4%</span></div>
     </div>
   </div>
-
-  <!-- Funnel bar -->
   <div class="card">
     <div class="card-title">Event Funnel</div>
     <div class="card-desc">Registrants → Attendees → Calls</div>
-    <div class="ch-wrap" style="height:190px;">
-      <canvas id="funnelChart"></canvas>
-    </div>
-    <div class="insight insight-purple" style="margin-top:12px;font-size:11px;">
+    <div style="height:190px;"><canvas id="o_funnelChart"></canvas></div>
+    <div class="ins-purple" style="margin-top:12px;font-size:11px;border-radius:0 8px 8px 0;">
       <strong>26.5%</strong> of live attendees booked a call. That's the number to move.
     </div>
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION 4 · EVENT COMPARISON
-═══════════════════════════════════════════════════ -->
-<div class="section-row mb-section" style="margin-top:24px">
-  <div class="section-label">March vs. June — Event Comparison</div>
-  <div class="section-rule"></div>
-</div>
-
-<div class="g-5-7 anim anim-d4">
-
-  <!-- Comparison table -->
+<!-- § Event Comparison -->
+<div class="sec-row mb" style="margin-top:24px"><div class="sec-label">March vs. June — Event Comparison</div><div class="sec-rule"></div></div>
+<div class="g-5-7 anim d4">
   <div class="card">
     <div class="card-title">Head-to-Head</div>
     <div class="card-desc">All tracked metrics · March 2026 vs June 2026</div>
-
     <table class="cmp-table">
-      <thead>
-        <tr>
-          <th>Metric</th>
-          <th>March '26</th>
-          <th>June '26</th>
-          <th>Delta</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Metric</th><th>March '26</th><th>June '26</th><th>Delta</th></tr></thead>
       <tbody>
-        <tr>
-          <td class="row-metric">Registrants</td>
-          <td class="col-march">384</td>
-          <td class="col-june">550</td>
-          <td><span class="kpi-delta delta-up" style="font-size:10px;">+43.2%</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">Live Attendees</td>
-          <td class="col-march">131</td>
-          <td class="col-june">117</td>
-          <td><span class="kpi-delta delta-down" style="font-size:10px;">−10.7%</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">Show Rate</td>
-          <td class="col-march">34.11%</td>
-          <td class="col-june">21.27%</td>
-          <td><span class="kpi-delta delta-down" style="font-size:10px;">−12.84pp</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">Calls Booked</td>
-          <td class="col-march">69</td>
-          <td class="col-june">31</td>
-          <td><span class="kpi-delta delta-down" style="font-size:10px;">−55.1%</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">Call Conv. Rate</td>
-          <td class="col-march">52.7%</td>
-          <td class="col-june">26.5%</td>
-          <td><span class="kpi-delta delta-down" style="font-size:10px;">−26.2pp</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">New Leads %</td>
-          <td class="col-march">—</td>
-          <td class="col-june">33.6%</td>
-          <td><span class="kpi-delta delta-neut" style="font-size:10px;">N/A</span></td>
-        </tr>
-        <tr>
-          <td class="row-metric">Cash Collected</td>
-          <td class="col-march">$41,526</td>
-          <td class="col-june c-muted" style="font-size:11px;font-style:italic;">Pending</td>
-          <td><span class="kpi-delta delta-neut" style="font-size:10px;">TBD</span></td>
-        </tr>
+        <tr><td class="row-metric">Registrants</td><td class="col-march">384</td><td class="col-june">550</td><td><span class="kpi-delta delta-up" style="font-size:10px">+43.2%</span></td></tr>
+        <tr><td class="row-metric">Live Attendees</td><td class="col-march">131</td><td class="col-june">117</td><td><span class="kpi-delta delta-down" style="font-size:10px">−10.7%</span></td></tr>
+        <tr><td class="row-metric">Show Rate</td><td class="col-march">34.11%</td><td class="col-june">21.27%</td><td><span class="kpi-delta delta-down" style="font-size:10px">−12.84pp</span></td></tr>
+        <tr><td class="row-metric">Calls Booked</td><td class="col-march">69</td><td class="col-june">31</td><td><span class="kpi-delta delta-down" style="font-size:10px">−55.1%</span></td></tr>
+        <tr><td class="row-metric">Call Conv. Rate</td><td class="col-march">52.7%</td><td class="col-june">26.5%</td><td><span class="kpi-delta delta-down" style="font-size:10px">−26.2pp</span></td></tr>
+        <tr><td class="row-metric">New Leads %</td><td class="col-march">—</td><td class="col-june">33.6%</td><td><span class="kpi-delta delta-neut" style="font-size:10px">N/A</span></td></tr>
+        <tr><td class="row-metric">Cash Collected</td><td class="col-march">$41,526</td><td class="col-june c-muted" style="font-style:italic;font-size:11px">Pending</td><td><span class="kpi-delta delta-neut" style="font-size:10px">TBD</span></td></tr>
       </tbody>
     </table>
   </div>
-
-  <!-- Side chart -->
   <div class="card">
     <div class="card-title">March vs. June — Side by Side</div>
     <div class="card-desc">Key volume metrics compared visually</div>
-    <div class="ch-wrap" style="height:230px;">
-      <canvas id="compareChart"></canvas>
-    </div>
-    <div class="insight insight-warn" style="margin-top:14px;">
-      <strong>Registrant volume is up +43%</strong> but show rate dropped from 34% to 21%. More people in the top of funnel, fewer converting to attendance. Worth testing reminder sequences and day-of SMS for the next event.
+    <div style="height:230px;"><canvas id="o_compareChart"></canvas></div>
+    <div class="insight-warn" style="margin-top:14px;border-radius:0 8px 8px 0;">
+      <strong>Registrant volume is up +43%</strong> but show rate dropped from 34% to 21%. More people at the top, fewer converting to attendance. Test reminder sequences and day-of SMS.
     </div>
   </div>
-
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SECTION 5 · CALLS & NEXT STEPS
-═══════════════════════════════════════════════════ -->
-<div class="section-row mb-section" style="margin-top:24px">
-  <div class="section-label">Calls Pipeline · Booking Phase</div>
-  <div class="section-rule"></div>
-</div>
-
-<div class="g3 anim anim-d5">
-  <!-- Calls booked card -->
+<!-- § Calls Pipeline -->
+<div class="sec-row mb" style="margin-top:24px"><div class="sec-label">Calls Pipeline · Booking Phase</div><div class="sec-rule"></div></div>
+<div class="g3 anim d5">
   <div class="card card-accent-top" style="display:flex;flex-direction:column;justify-content:center;">
     <div class="kpi-label">Total Calls Booked</div>
     <div class="hero-num c-lime" style="margin:8px 0;" data-count="31">0</div>
@@ -744,221 +731,421 @@ body::before {
       If June holds at a similar avg ticket, <strong>31 calls could yield ~$12–15K</strong>. Update this dashboard once cash is confirmed.
     </div>
   </div>
-
-  <!-- Conversion efficiency -->
   <div class="card">
     <div class="card-title">Conversion Funnel</div>
     <div class="card-desc">How 550 registrants became 31 booked calls</div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-      <div class="calls-stat">
-        <span class="calls-stat-label">Registered</span>
-        <span class="calls-stat-val c-paper">550</span>
-      </div>
-      <div class="calls-stat">
-        <span class="calls-stat-label">Attended Live</span>
-        <span class="calls-stat-val c-purple">117 <span class="c-muted" style="font-size:10px;font-weight:400">(21.3% of reg)</span></span>
-      </div>
-      <div class="calls-stat">
-        <span class="calls-stat-label">Booked a Call</span>
-        <span class="calls-stat-val c-lime">31 <span class="c-muted" style="font-size:10px;font-weight:400">(26.5% of att)</span></span>
-      </div>
-      <div class="calls-stat" style="border-color:rgba(171,241,21,0.2)">
-        <span class="calls-stat-label">Reg → Call Rate</span>
-        <span class="calls-stat-val c-lime">5.6%</span>
-      </div>
+      <div class="calls-stat"><span class="calls-stat-label">Registered</span><span class="calls-stat-val c-paper">550</span></div>
+      <div class="calls-stat"><span class="calls-stat-label">Attended Live</span><span class="calls-stat-val c-purple">117 <span class="c-muted" style="font-size:10px;font-weight:400">(21.3% of reg)</span></span></div>
+      <div class="calls-stat"><span class="calls-stat-label">Booked a Call</span><span class="calls-stat-val c-lime">31 <span class="c-muted" style="font-size:10px;font-weight:400">(26.5% of att)</span></span></div>
+      <div class="calls-stat" style="border-color:rgba(171,241,21,0.2)"><span class="calls-stat-label">Reg → Call Rate</span><span class="calls-stat-val c-lime">5.6%</span></div>
     </div>
   </div>
-
-  <!-- Signal summary -->
   <div class="card">
     <div class="card-title">Signals Worth Watching</div>
     <div class="card-desc">What the data says right now</div>
     <div style="display:flex;flex-direction:column;gap:9px;margin-top:4px;">
-      <div class="insight" style="margin-top:0;">
-        <strong>Ads are your new-lead engine.</strong> 82% of ad registrants are first-time contacts. Keep spending if ROAS holds.
-      </div>
-      <div class="insight insight-purple" style="margin-top:0;">
-        <strong>Email list is loyal but saturated.</strong> Only 5.4% of email signups are new. Time to grow the list, not just mail it.
-      </div>
-      <div class="insight insight-warn" style="margin-top:0;">
-        <strong>Show rate dropped hard (−12.8pp).</strong> More registrants, fewer showing up. Test reminder cadence, show-up incentives, and countdown SMS.
-      </div>
+      <div class="insight" style="margin-top:0;"><strong>Ads are your new-lead engine.</strong> 82% of ad registrants are first-time contacts. Keep spending if ROAS holds.</div>
+      <div class="ins-purple" style="margin-top:0;border-radius:0 8px 8px 0;"><strong>Email list is loyal but saturated.</strong> Only 5.4% of email signups are new. Time to grow the list, not just mail it.</div>
+      <div class="ins-warn" style="margin-top:0;border-radius:0 8px 8px 0;"><strong>Show rate dropped hard (−12.8pp).</strong> More registrants, fewer showing up. Test reminder cadence, show-up incentives, countdown SMS.</div>
     </div>
   </div>
 </div>
 
+</div><!-- /shell -->
+</div><!-- /tab-panel #overview -->
 
-<!-- FOOTER -->
-<div class="footer">
-  MomFit · June 2026 Masterclass · Data source: GoHighLevel CRM export · Analyzed June 28 2026 · Built by Gravity
+
+<!-- ═══════════════════════════════════
+     TAB 2 — TIMING INTELLIGENCE
+═══════════════════════════════════ -->
+<div class="tab-panel" id="tab-timing">
+<div class="shell">
+
+<!-- § Daily cadence -->
+<div class="sec-row mb"><div class="sec-label">Daily Registration Cadence</div><div class="sec-rule"></div></div>
+<div class="card anim d1" style="margin-bottom:14px;">
+  <div class="card-title">Registrations by Day</div>
+  <div class="card-desc">9-day campaign window · June 20–28 · Event day: Sunday June 28</div>
+  <div style="height:180px;"><canvas id="t_dailyChart"></canvas></div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;">
+    <div class="ins-lime" style="flex:1;min-width:200px;border-radius:0 8px 8px 0;"><strong>Monday June 22 = 119 signups.</strong> Campaign launch day. One blast drove 22% of all registrations in a single day.</div>
+    <div class="ins-purple" style="flex:1;min-width:200px;border-radius:0 8px 8px 0;"><strong>Sunday June 28 = 171 signups</strong> — the event day. Day-of urgency is real. 31% registered the same day as the masterclass.</div>
+    <div class="ins-teal" style="flex:1;min-width:200px;border-radius:0 8px 8px 0;"><strong>Thursday June 25 = 78 signups.</strong> Mid-week re-engagement spike. Second biggest non-event day. Keep Thursday in rotation.</div>
+  </div>
 </div>
 
-</div><!-- /wrap -->
+<!-- § Hourly All -->
+<div class="sec-row mb" style="margin-top:10px;"><div class="sec-label">Hourly Distribution · All Channels</div><div class="sec-rule"></div></div>
+<div class="g-2-1 anim d2">
+  <div class="card">
+    <div class="card-title">Registrations by Hour — All 550</div>
+    <div class="card-desc">24h clock · CRM local timezone</div>
+    <div style="height:200px;"><canvas id="t_allHourlyChart"></canvas></div>
+    <div style="margin-top:18px;">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:2.5px;color:var(--muted);margin-bottom:8px;font-weight:600;">Intensity Map — Hover for counts</div>
+      <div class="heat-grid" id="t_heatGrid"></div>
+      <div class="heat-hour-labels" id="t_heatLabels"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Top Registration Hours</div>
+    <div class="card-desc">All sources combined</div>
+    <div class="peak-list" id="t_peakList"></div>
+    <div class="divider"></div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);font-weight:600;margin-bottom:10px;">Time Block Summary</div>
+    <div id="t_blockSummary" style="display:flex;flex-direction:column;gap:6px;"></div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════════
-     SCRIPTS
-═══════════════════════════════════════════════════ -->
+<!-- § Channel comparison -->
+<div class="sec-row mb" style="margin-top:10px;"><div class="sec-label">Hour-by-Hour · Channel Breakdown</div><div class="sec-rule"></div></div>
+<div class="card anim d3" style="margin-bottom:14px;">
+  <div class="card-title">Registrations by Hour — Segmented by Channel</div>
+  <div class="card-desc">Ads · Email/SMS · Organic overlaid · Reveals when each channel converts</div>
+  <div style="height:240px;"><canvas id="t_channelChart"></canvas></div>
+</div>
+<div class="g3 anim d3">
+  <div class="card al-lime">
+    <div class="kpi-label c-lime">📣 Paid Ads</div>
+    <div class="card-title c-lime">186 registrants</div>
+    <div class="card-desc">Hour-by-hour pattern</div>
+    <div class="heat-grid" id="t_adsHeat"></div>
+    <div class="heat-hour-labels" id="t_adsHeatLabels"></div>
+    <div class="divider"></div>
+    <div class="peak-list" id="t_adsPeaks"></div>
+  </div>
+  <div class="card al-purple">
+    <div class="kpi-label c-purple">📧 Email / SMS</div>
+    <div class="card-title c-purple">317 registrants</div>
+    <div class="card-desc">Hour-by-hour pattern</div>
+    <div class="heat-grid" id="t_emailHeat"></div>
+    <div class="heat-hour-labels" id="t_emailHeatLabels"></div>
+    <div class="divider"></div>
+    <div class="peak-list" id="t_emailPeaks"></div>
+  </div>
+  <div class="card al-teal">
+    <div class="kpi-label c-teal">🌿 Organic</div>
+    <div class="card-title c-teal">51 registrants</div>
+    <div class="card-desc">Hour-by-hour pattern</div>
+    <div class="heat-grid" id="t_organicHeat"></div>
+    <div class="heat-hour-labels" id="t_organicHeatLabels"></div>
+    <div class="divider"></div>
+    <div class="peak-list" id="t_organicPeaks"></div>
+  </div>
+</div>
+
+<!-- § Playbooks -->
+<div class="sec-row mb" style="margin-top:10px;"><div class="sec-label">Channel Playbooks · Timing Recommendations</div><div class="sec-rule"></div></div>
+<div class="g3 anim d4">
+  <div class="rec-card al-lime">
+    <div class="rec-channel c-lime">📣 Paid Ads</div>
+    <div class="rec-title">Run hard at 10am. Let it ride overnight.</div>
+    <div class="rec-block">
+      <div class="rec-block-label">Primary Windows</div>
+      <div class="rec-times"><span class="time-badge tb-lime">🔥 10:00–11:00am</span><span class="time-badge tb-lime">8:00–10:00pm</span></div>
+      <div class="rec-note">10am is your single biggest hour — 48 of 186 ad registrations (26%) landed there. Budget heavily into the 9:30–11am window every campaign day.</div>
+    </div>
+    <div class="rec-block">
+      <div class="rec-block-label">Secondary Window</div>
+      <div class="rec-times"><span class="time-badge tb-lime">5:00–6:00pm</span><span class="time-badge tb-lime">Midnight–2:00am</span></div>
+      <div class="rec-note">Overnight (12am–2am) drove 18 ad registrations. Ads keep converting while you sleep — never kill overnight delivery.</div>
+    </div>
+    <div class="divider"></div>
+    <div class="rec-block-label" style="margin-bottom:6px;">Avoid / Low ROI</div>
+    <div class="rec-times"><span class="avoid-tag">3am–5am (5 regs)</span><span class="avoid-tag">Lunch 12–2pm (11 regs)</span></div>
+    <div class="ins-lime" style="margin-top:14px;font-size:11px;border-radius:0 8px 8px 0;"><strong>Test dayparting.</strong> Pause bids 3–8am. Reallocate to 9:30–11am and 8–10pm. Same budget, more registrations.</div>
+  </div>
+
+  <div class="rec-card al-purple">
+    <div class="rec-channel c-purple">📧 Email / SMS</div>
+    <div class="rec-title">Send at 4pm. The evening window dominates.</div>
+    <div class="rec-block">
+      <div class="rec-block-label">Primary Windows</div>
+      <div class="rec-times"><span class="time-badge tb-purple">🔥 5:00–8:00pm</span><span class="time-badge tb-purple">2:00–5:00pm</span></div>
+      <div class="rec-note">Evening (5–8pm) drove 95 email/SMS regs — 30% of the entire channel. Afternoon (2–5pm) added 71 more. These moms check phones after kids get home.</div>
+    </div>
+    <div class="rec-block">
+      <div class="rec-block-label">Secondary Window</div>
+      <div class="rec-times"><span class="time-badge tb-purple">10:00–11:00am</span><span class="time-badge tb-purple">8:00–10:00pm</span></div>
+      <div class="rec-note">10–11am had 36 email regs. Good for a second send or cold-list SMS reminder.</div>
+    </div>
+    <div class="divider"></div>
+    <div class="rec-block-label" style="margin-bottom:6px;">Avoid / Low ROI</div>
+    <div class="rec-times"><span class="avoid-tag">1am–7am (16 regs)</span><span class="avoid-tag">7am–9am (5 regs)</span></div>
+    <div class="ins-purple" style="margin-top:14px;font-size:11px;border-radius:0 8px 8px 0;"><strong>Next event cadence:</strong> 10am blast on launch day → 4pm second send → 5pm SMS. Evening is when your list converts.</div>
+  </div>
+
+  <div class="rec-card al-teal">
+    <div class="rec-channel c-teal">🌿 Organic Social</div>
+    <div class="rec-title">Post at 2pm and 6pm. Skip mornings.</div>
+    <div class="rec-block">
+      <div class="rec-block-label">Primary Windows</div>
+      <div class="rec-times"><span class="time-badge tb-teal">🔥 2:00–5:00pm</span><span class="time-badge tb-teal">5:00–8:00pm</span></div>
+      <div class="rec-note">Afternoon + evening drove 27 of 51 organic regs — 53% of the channel. Post early so the algorithm distributes before peak scroll hours.</div>
+    </div>
+    <div class="rec-block">
+      <div class="rec-block-label">Secondary Window</div>
+      <div class="rec-times"><span class="time-badge tb-teal">12:00–2:00pm</span><span class="time-badge tb-teal">7:00–8:00pm</span></div>
+      <div class="rec-note">Lunch slot (12–2pm) delivered 7 regs. Worth a reel at noon for reach by 2pm.</div>
+    </div>
+    <div class="divider"></div>
+    <div class="rec-block-label" style="margin-bottom:6px;">Avoid / Low ROI</div>
+    <div class="rec-times"><span class="avoid-tag">5am–9am (1 reg total)</span><span class="avoid-tag">9am–10am (0 regs)</span></div>
+    <div class="ins-teal" style="margin-top:14px;font-size:11px;border-radius:0 8px 8px 0;"><strong>Posting schedule:</strong> 12pm reel · 2pm post · 5:30pm story. Early morning posts are wasted on this audience.</div>
+  </div>
+</div>
+
+<!-- § Cross-channel schedule -->
+<div class="sec-row mb" style="margin-top:10px;"><div class="sec-label">Cross-Channel Time Alignment</div><div class="sec-rule"></div></div>
+<div class="card anim d5" style="margin-bottom:14px;">
+  <div class="card-title">Ideal Daily Schedule — Next Masterclass Campaign</div>
+  <div class="card-desc">Based on actual registration patterns. All three channels aligned into one ops-ready daily calendar.</div>
+  <div style="height:220px;"><canvas id="t_scheduleChart"></canvas></div>
+</div>
+<div class="g3 anim d5">
+  <div class="ins-lime" style="border-radius:8px;border-left:3px solid var(--lime);"><strong>10:00–11:00am — All channels fire.</strong> Ads peak here. Email converts here. Organic gets traction. One blast + one ad set per campaign day: set it for 9:45am.</div>
+  <div class="ins-purple" style="border-radius:8px;border-left:3px solid var(--cornflower);"><strong>5:00–8:00pm — Email/SMS golden window.</strong> Kids are home, dinner is on, moms are scrolling. SMS reminder at 5pm on event day will directly move show rate.</div>
+  <div class="ins-warn" style="border-radius:8px;border-left:3px solid var(--negative);"><strong>3am–8am — dead zone for all channels.</strong> 45 total registrations in the full overnight stretch. Overnight ads are fine; don't schedule email pushes or posts before 9am.</div>
+</div>
+
+</div><!-- /shell -->
+</div><!-- /tab-panel #timing -->
+
+
+<!-- FOOTER -->
+<div class="site-footer">
+  MomFit · June 2026 Masterclass · GoHighLevel CRM Export · Analyzed June 28 2026 · Built by Gravity
+</div>
+
+
 <script>
-/* ── COUNTER ANIMATION ───────────────────────── */
+/* ═══════════════════════════════════════════════
+   CONSTANTS
+═══════════════════════════════════════════════ */
+const LIME   = '#ABF115';
+const PURPLE = '#C7B5F1';
+const TEAL   = '#4ac6d8';
+const PAPER  = 'rgba(245,243,238,0.80)';
+const NEG    = '#f2617a';
+const GRID   = 'rgba(245,243,238,0.05)';
+const HLABELS = ['12a','1a','2a','3a','4a','5a','6a','7a','8a','9a','10a','11a','12p','1p','2p','3p','4p','5p','6p','7p','8p','9p','10p','11p'];
+const ALL_H   = [17,6,12,5,5,5,5,8,7,11,70,25,22,21,24,37,39,35,59,34,31,28,18,26];
+const ADS_H   = [8,4,10,4,4,2,4,7,2,7,48,6,4,7,6,4,5,12,7,4,7,13,5,6];
+const EMAIL_H = [7,1,1,0,1,3,1,1,4,4,19,17,14,11,11,32,28,21,49,25,23,14,12,18];
+const ORG_H   = [2,1,1,1,0,0,0,0,1,0,3,2,4,3,7,1,6,4,4,5,1,1,1,3];
+const DAILY_LABELS = ['Sat 06-20','Sun 06-21','Mon 06-22','Tue 06-23','Wed 06-24','Thu 06-25','Fri 06-26','Sat 06-27','Sun 06-28'];
+const DAILY_COUNTS = [8,18,119,42,32,78,43,39,171];
+
+Chart.defaults.color = 'rgba(245,243,238,0.4)';
+Chart.defaults.font  = {family:"'Geist','Calibri',sans-serif", size:11};
+
+/* ═══════════════════════════════════════════════
+   TAB SWITCHING
+═══════════════════════════════════════════════ */
+const tabInited = {overview: false, timing: false};
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + target).classList.add('active');
+    if (!tabInited[target]) {
+      tabInited[target] = true;
+      if (target === 'overview') initOverview();
+      if (target === 'timing') initTiming();
+    }
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   COUNTER ANIMATION
+═══════════════════════════════════════════════ */
 function counter(el, to, suffix='', decimals=0) {
   const dur = 1600, t0 = performance.now();
   const tick = now => {
     const p = Math.min((now - t0) / dur, 1);
     const e = 1 - Math.pow(1 - p, 4);
-    const v = (to * e);
     el.textContent = decimals
-      ? v.toFixed(decimals) + suffix
-      : Math.round(v).toLocaleString() + suffix;
-    if(p < 1) requestAnimationFrame(tick);
+      ? (to * e).toFixed(decimals) + suffix
+      : Math.round(to * e).toLocaleString() + suffix;
+    if (p < 1) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
 }
 
-window.addEventListener('load', () => {
+/* ═══════════════════════════════════════════════
+   HEAT GRID
+═══════════════════════════════════════════════ */
+function buildHeat(gridId, lblId, data, color) {
+  const grid = document.getElementById(gridId);
+  const lbl  = document.getElementById(lblId);
+  if (!grid) return;
+  const maxV = Math.max(...data);
+  data.forEach((v, i) => {
+    const alpha = v === 0 ? 0.04 : 0.1 + (v / maxV) * 0.75;
+    const r = parseInt(color.slice(1,3),16);
+    const g = parseInt(color.slice(3,5),16);
+    const b = parseInt(color.slice(5,7),16);
+    const cell = document.createElement('div');
+    cell.className = 'heat-cell';
+    cell.style.background = `rgba(${r},${g},${b},${alpha})`;
+    cell.title = `${HLABELS[i]}: ${v}`;
+    if (v === maxV && v > 0) cell.textContent = v;
+    grid.appendChild(cell);
+  });
+  if (lbl) {
+    HLABELS.forEach((h, i) => {
+      const sp = document.createElement('span');
+      sp.textContent = i % 3 === 0 ? h : '';
+      lbl.appendChild(sp);
+    });
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   PEAK LIST
+═══════════════════════════════════════════════ */
+function buildPeaks(containerId, data, color, topN = 5) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const maxV = Math.max(...data);
+  [...data.map((v,i)=>({v,i}))].sort((a,b)=>b.v-a.v).slice(0,topN).forEach(({v,i}) => {
+    const pct = maxV > 0 ? (v / maxV * 100) : 0;
+    const div = document.createElement('div');
+    div.className = 'peak-item';
+    div.innerHTML = `<span class="pi-time">${HLABELS[i]}</span>
+      <div class="pi-bar"><div class="pi-fill" style="background:${color}" data-w="${pct}"></div></div>
+      <span class="pi-count" style="color:${color}">${v}</span>`;
+    el.appendChild(div);
+  });
+  setTimeout(() => el.querySelectorAll('.pi-fill').forEach(f => f.style.width = f.dataset.w + '%'), 300);
+}
+
+function buildBlockSummary(elId) {
+  const blocks = [
+    {label:'10am–12pm', val: ALL_H[10]+ALL_H[11]},
+    {label:'5pm–8pm',   val: ALL_H[17]+ALL_H[18]+ALL_H[19]},
+    {label:'2pm–5pm',   val: ALL_H[14]+ALL_H[15]+ALL_H[16]},
+    {label:'8pm–11pm',  val: ALL_H[20]+ALL_H[21]+ALL_H[22]},
+    {label:'12am–5am',  val: ALL_H[0]+ALL_H[1]+ALL_H[2]+ALL_H[3]+ALL_H[4]},
+  ];
+  const max = Math.max(...blocks.map(b => b.val));
+  const el = document.getElementById(elId);
+  if (!el) return;
+  blocks.forEach(b => {
+    const pct = (b.val / max * 100).toFixed(0);
+    el.innerHTML += `<div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:10px;color:var(--muted);width:120px;flex-shrink:0;">${b.label}</span>
+      <div style="flex:1;height:4px;background:rgba(245,243,238,.07);border-radius:2px;overflow:hidden;">
+        <div class="pi-fill" style="background:${LIME}" data-w="${pct}"></div>
+      </div>
+      <span style="font-size:11px;font-weight:700;color:var(--lime);width:26px;text-align:right;">${b.val}</span>
+    </div>`;
+  });
+  setTimeout(() => el.querySelectorAll('.pi-fill').forEach(f => f.style.width = f.dataset.w + '%'), 300);
+}
+
+/* ═══════════════════════════════════════════════
+   TAB 1 — OVERVIEW INIT
+═══════════════════════════════════════════════ */
+function initOverview() {
   document.querySelectorAll('[data-count]').forEach(el => counter(el, +el.dataset.count));
   counter(document.getElementById('showRate'), 21.27, '%', 2);
   counter(document.getElementById('convRate'), 26.5, '%', 1);
-
-  // Progress bars
   setTimeout(() => {
     document.querySelectorAll('.pbar-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
     document.querySelectorAll('.nv-bar-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
   }, 200);
 
-  renderCharts();
-});
-
-/* ── CHARTS ──────────────────────────────────── */
-Chart.defaults.color = 'rgba(245,243,238,0.45)';
-Chart.defaults.font  = { family: "'Geist','Calibri',sans-serif", size: 11 };
-
-const LIME   = '#ABF115';
-const PURPLE = '#C7B5F1';
-const TEAL   = '#4ac6d8';
-const STONE  = '#025865';
-const NEG    = '#f2617a';
-const PAPER  = 'rgba(245,243,238,0.85)';
-const BG     = 'transparent';
-
-function renderCharts(){
-
-  /* Source donut */
-  new Chart(document.getElementById('srcChart'),{
+  new Chart(document.getElementById('o_srcChart'), {
     type:'doughnut',
-    data:{
-      labels:['Email / SMS','Paid Ads','Organic'],
-      datasets:[{
-        data:[317,186,51],
-        backgroundColor:[PURPLE, LIME, TEAL],
-        borderColor:'#052F35',
-        borderWidth:3,
-        hoverOffset:6
-      }]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      cutout:'68%',
-      plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label: c=> ` ${c.label}: ${c.parsed} (${(c.parsed/550*100).toFixed(1)}%)` } }
-      }
-    }
+    data:{ labels:['Email/SMS','Paid Ads','Organic'], datasets:[{ data:[317,186,51], backgroundColor:[PURPLE,LIME,TEAL], borderColor:'#052F35', borderWidth:3, hoverOffset:6 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} (${(c.parsed/550*100).toFixed(1)}%)`}} } }
   });
 
-  /* New vs Returning donut */
-  new Chart(document.getElementById('newChart'),{
+  new Chart(document.getElementById('o_newChart'), {
     type:'doughnut',
-    data:{
-      labels:['Brand New','Returning'],
-      datasets:[{
-        data:[185,365],
-        backgroundColor:[LIME, PURPLE],
-        borderColor:'#052F35',
-        borderWidth:3,
-        hoverOffset:6
-      }]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      cutout:'68%',
-      plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label: c=> ` ${c.label}: ${c.parsed} (${(c.parsed/550*100).toFixed(1)}%)` } }
-      }
-    }
+    data:{ labels:['Brand New','Returning'], datasets:[{ data:[185,365], backgroundColor:[LIME,PURPLE], borderColor:'#052F35', borderWidth:3, hoverOffset:6 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.label}: ${c.parsed} (${(c.parsed/550*100).toFixed(1)}%)`}} } }
   });
 
-  /* Funnel horizontal bar */
-  new Chart(document.getElementById('funnelChart'),{
+  new Chart(document.getElementById('o_funnelChart'), {
     type:'bar',
-    data:{
-      labels:['Registered','Attended Live','Called Booked'],
-      datasets:[{
-        data:[550,117,31],
-        backgroundColor:[
-          'rgba(171,241,21,0.55)',
-          'rgba(199,181,241,0.55)',
-          'rgba(74,198,216,0.55)'
-        ],
-        borderRadius:5,
-        borderSkipped:false
-      }]
-    },
-    options:{
-      indexAxis:'y',
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label: c=> ` ${c.parsed.x.toLocaleString()} people` } }
-      },
-      scales:{
-        x:{ grid:{color:'rgba(245,243,238,0.05)'}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'} },
-        y:{ grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER, font:{size:11}} }
-      }
-    }
+    data:{ labels:['Registered','Attended','Calls Booked'], datasets:[{ data:[550,117,31], backgroundColor:['rgba(171,241,21,0.55)','rgba(199,181,241,0.55)','rgba(74,198,216,0.55)'], borderRadius:5, borderSkipped:false }] },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.x.toLocaleString()} people`}} }, scales:{ x:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'}}, y:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER}} } }
   });
 
-  /* March vs June grouped bar */
-  new Chart(document.getElementById('compareChart'),{
+  new Chart(document.getElementById('o_compareChart'), {
     type:'bar',
-    data:{
-      labels:['Registrants','Live Attendees','Calls Booked'],
-      datasets:[
-        {
-          label:'March 2026',
-          data:[384,131,69],
-          backgroundColor:'rgba(199,181,241,0.45)',
-          borderColor:PURPLE,
-          borderWidth:1,
-          borderRadius:4,
-          borderSkipped:false
-        },
-        {
-          label:'June 2026',
-          data:[550,117,31],
-          backgroundColor:'rgba(171,241,21,0.45)',
-          borderColor:LIME,
-          borderWidth:1,
-          borderRadius:4,
-          borderSkipped:false
-        }
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{
-          display:true,
-          position:'bottom',
-          labels:{ color:PAPER, boxWidth:10, padding:16, font:{size:11} }
-        },
-        tooltip:{ callbacks:{ label: c=> ` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}` } }
-      },
-      scales:{
-        x:{ grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER} },
-        y:{ grid:{color:'rgba(245,243,238,0.05)'}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.4)'} }
-      }
-    }
+    data:{ labels:['Registrants','Live Attendees','Calls Booked'], datasets:[
+      { label:'March 2026', data:[384,131,69], backgroundColor:'rgba(199,181,241,0.45)', borderColor:PURPLE, borderWidth:1, borderRadius:4, borderSkipped:false },
+      { label:'June 2026',  data:[550,117,31], backgroundColor:'rgba(171,241,21,0.45)',  borderColor:LIME,   borderWidth:1, borderRadius:4, borderSkipped:false }
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:true, position:'bottom', labels:{color:PAPER, boxWidth:10, padding:16}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}`}} }, scales:{ x:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER}}, y:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.4)'}} } }
   });
-
 }
+
+/* ═══════════════════════════════════════════════
+   TAB 2 — TIMING INIT
+═══════════════════════════════════════════════ */
+function initTiming() {
+  buildHeat('t_heatGrid','t_heatLabels', ALL_H, '#F5F3EE');
+  buildHeat('t_adsHeat','t_adsHeatLabels', ADS_H, LIME);
+  buildHeat('t_emailHeat','t_emailHeatLabels', EMAIL_H, PURPLE);
+  buildHeat('t_organicHeat','t_organicHeatLabels', ORG_H, TEAL);
+  buildPeaks('t_peakList', ALL_H, LIME, 6);
+  buildPeaks('t_adsPeaks', ADS_H, LIME, 3);
+  buildPeaks('t_emailPeaks', EMAIL_H, PURPLE, 3);
+  buildPeaks('t_organicPeaks', ORG_H, TEAL, 3);
+  buildBlockSummary('t_blockSummary');
+
+  new Chart(document.getElementById('t_dailyChart'), {
+    type:'bar',
+    data:{ labels:DAILY_LABELS, datasets:[{ data:DAILY_COUNTS,
+      backgroundColor:DAILY_COUNTS.map(v => v===171?'rgba(171,241,21,0.7)':v===119?'rgba(199,181,241,0.7)':v===78?'rgba(74,198,216,0.5)':'rgba(245,243,238,0.15)'),
+      borderRadius:5, borderSkipped:false }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y} registrations`}} }, scales:{ x:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER}}, y:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'}} } }
+  });
+
+  new Chart(document.getElementById('t_allHourlyChart'), {
+    type:'bar',
+    data:{ labels:HLABELS, datasets:[{ data:ALL_H,
+      backgroundColor:ALL_H.map(v => v>=50?'rgba(171,241,21,0.75)':v>=30?'rgba(171,241,21,0.45)':v>=15?'rgba(171,241,21,0.25)':'rgba(171,241,21,0.1)'),
+      borderRadius:4, borderSkipped:false }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y} registrations`}} }, scales:{ x:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER, font:{size:10}}}, y:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'}} } }
+  });
+
+  new Chart(document.getElementById('t_channelChart'), {
+    type:'line',
+    data:{ labels:HLABELS, datasets:[
+      {label:'Ads',      data:ADS_H,   borderColor:LIME,   backgroundColor:'rgba(171,241,21,0.07)',  borderWidth:2.5, pointRadius:3, pointHoverRadius:5, tension:.35, fill:true},
+      {label:'Email/SMS',data:EMAIL_H, borderColor:PURPLE, backgroundColor:'rgba(199,181,241,0.07)', borderWidth:2.5, pointRadius:3, pointHoverRadius:5, tension:.35, fill:true},
+      {label:'Organic',  data:ORG_H,   borderColor:TEAL,   backgroundColor:'rgba(74,198,216,0.07)',  borderWidth:2,   pointRadius:3, pointHoverRadius:5, tension:.35, fill:true},
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{ legend:{display:true, position:'bottom', labels:{color:PAPER, boxWidth:10, padding:16}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}`}} }, scales:{ x:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER, font:{size:10}}}, y:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'}} } }
+  });
+
+  new Chart(document.getElementById('t_scheduleChart'), {
+    type:'bar',
+    data:{ labels:['12a-5a','5a-9a','9a-10a','10-11a','11a-12p','12-2p','2-5p','5-8p','8-11p'], datasets:[
+      {label:'Ads',      data:[36,15,7,48,6,11,15,23,25],  backgroundColor:'rgba(171,241,21,0.55)',  borderRadius:4, borderSkipped:false},
+      {label:'Email/SMS',data:[28,9,4,19,17,25,71,95,49],  backgroundColor:'rgba(199,181,241,0.55)', borderRadius:4, borderSkipped:false},
+      {label:'Organic',  data:[8,1,0,3,2,7,14,13,3],       backgroundColor:'rgba(74,198,216,0.55)',  borderRadius:4, borderSkipped:false},
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:true, position:'bottom', labels:{color:PAPER, boxWidth:10, padding:16}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y} regs`}} }, scales:{ x:{grid:{display:false}, border:{color:'transparent'}, ticks:{color:PAPER}}, y:{grid:{color:GRID}, border:{color:'transparent'}, ticks:{color:'rgba(245,243,238,0.35)'}} } }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   BOOT — init overview on load
+═══════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  tabInited.overview = true;
+  initOverview();
+});
 </script>
 </body>
 </html>
